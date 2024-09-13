@@ -1,10 +1,239 @@
-{% extends "base.html" %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            height: 40px; /* Adjust as needed */
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        .form-group input.error {
+            border-color: red;
+        }
+        .form-group .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .form-group input[type="submit"] {
+            background-color: #ff9900;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #e68a00;
+        }
+        .show-password {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        .show-password input {
+            width: auto;
+            margin-right: 5px;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .login-link a {
+            color: #ff9900;
+            text-decoration: none;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+ <div class="container">
+        <div class="header">
+            <img src="vn-shopy-logo.png" alt="VN Shopy">
+        </div>
+        <h1>Create Your Account</h1>
+        <form id="signup-form" action="{% url 'users:register' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="username" placeholder="Enter your first name & last name">
+                <span class="error" id="name-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="contact">Mobile Number or Email</label>
+                <input type="text" id="contact" name="email_or_mobile" placeholder="Enter mobile number or email">
+                <span class="error" id="contact-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password">
+                <div class="show-password">
+                    <input type="checkbox" id="show-password">
+                    <label for="show-password">Show Password</label>
+                </div>
+                <span class="error" id="password-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="repassword">Re-enter Password</label>
+                <input type="password" id="repassword" name="re_password" placeholder="Re-enter your password">
+                <span class="error" id="repassword-error"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Continue">
+            </div>
+            <div id="legalTextRow" class="a-row a-spacing-top-medium a-size-small">
+                By continuing, you agree to VN SHOPY's <a href="{% url 'users:conditions_of_use' %}">Conditions of Use</a> and <a href="{% url 'users:privacy_notice' %}">Privacy Notice</a>.
+            </div>
+            <div class="a-section">
+                <div class="a-row a-expander-container a-expander-inline-container">
+                    <a data-csa-c-func-deps="aui-da-a-expander-toggle" data-csa-c-type="widget" data-csa-interaction-events="click" aria-expanded="false" role="button" href="javascript:void(0)" data-action="a-expander-toggle" class="a-expander-header a-declarative a-expander-inline-header a-link-expander" data-a-expander-toggle="{&quot;allowLinkDefault&quot;:true, &quot;expand_prompt&quot;:&quot;&quot;, &quot;collapse_prompt&quot;:&quot;&quot;}" data-csa-c-id="vvrzfo-tai9bh-g8yamd-ox4cmk">
+                        <i class="a-icon a-icon-expand"></i>
+                        <a href="{% url 'users:need_help' %}">Need help?</a>
+                    </a>
+                </div>
+            </div>
+            <div class="login-link">
+                <p>Already have an account? <a href="{% url 'users:login' %}">Log in</a></p>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('signup-form');
+            const nameInput = document.getElementById('name');
+            const contactInput = document.getElementById('contact');
+            const passwordInput = document.getElementById('password');
+            const repasswordInput = document.getElementById('repassword');
+            const showPasswordCheckbox = document.getElementById('show-password');
+            
+            const nameError = document.getElementById('name-error');
+            const contactError = document.getElementById('contact-error');
+            const passwordError = document.getElementById('password-error');
+            const repasswordError = document.getElementById('repassword-error');
+            
+            form.addEventListener('submit', function (event) {
+                let isValid = true;
+                
+                // Clear previous errors
+                nameInput.classList.remove('error');
+                contactInput.classList.remove('error');
+                passwordInput.classList.remove('error');
+                repasswordInput.classList.remove('error');
+                
+                nameError.textContent = '';
+                contactError.textContent = '';
+                passwordError.textContent = '';
+                repasswordError.textContent = '';
+                
+                // Validate Name
+                if (nameInput.value.trim() === '') {
+                    nameInput.classList.add('error');
+                    nameError.textContent = 'Enter your name.';
+                    isValid = false;
+                } else if (nameInput.value.trim().length < 8) {
+                    nameInput.classList.add('error');
+                    nameError.textContent = 'Name must be at least 8 characters long.';
+                    isValid = false;
+                }
+                
+               // Contact Validation
+                const contactPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email validation
+                const phonePattern = /^\d{10}$/; // Simple phone validation (10 digits)
+                if (contactInput.value.trim() === '') {
+                    contactInput.classList.add('error');
+                    contactError.textContent = 'Enter your mobile number or email.';
+                    isValid = false;
+                } else if (!contactPattern.test(contactInput.value.trim()) && !phonePattern.test(contactInput.value.trim())) {
+                    contactInput.classList.add('error');
+                    contactError.textContent = 'Please enter a valid mobile number or email address.';
+                    isValid = false;
+                }
 
-{% block link %}{% endblock link %}
-{% block title %}{% endblock title %}
-{% block content %}
-<div class="display-5 text-center mb-4 mt-5">This is register page</div>
+                // Password Validation
+                if (passwordInput.value.trim() === '') {
+                    passwordInput.classList.add('error');
+                    passwordError.textContent = 'Please fill out this field.';
+                    isValid = false;
+                } else if (passwordInput.value.trim().length < 8) {
+                    passwordInput.classList.add('error');
+                    passwordError.textContent = ' Enter your password.';
+                    isValid = false;
+                }
 
-{% endblock content %}
-{% block script %}{% endblock script %}
+                // Confirm Password Validation
+                if (repasswordInput.value.trim() === '') {
+                    repasswordInput.classList.add('error');
+                    repasswordError.textContent = 'Re-enter your password.';
+                    isValid = false;
+                } else if (passwordInput.value !== repasswordInput.value) {
+                    repasswordInput.classList.add('error');
+                    repasswordError.textContent = 'Passwords do not match.';
+                    isValid = false;
+                }
+
+                // Prevent form submission if validation fails
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+                        
+            // Toggle password visibility
+            showPasswordCheckbox.addEventListener('change', function () {
+                if (showPasswordCheckbox.checked) {
+                    passwordInput.type = 'text';
+                    repasswordInput.type = 'text';
+                } else {
+                    passwordInput.type = 'password';
+                    repasswordInput.type = 'password';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,9 +1,162 @@
-{% extends "base.html" %}
-{% load static %}
 
-{% block link %}{% endblock link %}
-{% block title %}{% endblock title %}
-{% block content %}
-<div class="display-5 text-center mb-4 mt-5">This is login page</div>
-{% endblock content %}
-{% block script %}{% endblock script %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        .form-group input.error {
+            border-color: red;
+        }
+        .form-group input[type="submit"] {
+            background-color: #ff9900;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #e68a00;
+        }
+        .outline-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ff9900;
+            border-radius: 4px;
+            background-color: transparent;
+            color: #ff9900;
+            text-align: center;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            text-decoration: none;
+        }
+        .outline-button:hover {
+            background-color: #ff9900;
+            color: #fff;
+        }
+        h3 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+   
+
+      <section>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="login-form" action="" method="POST">
+            {% csrf_token %}
+          
+            <div class="form-group">
+                <label for="email-or-mobile">Email or Mobile Number</label>
+                <input type="text" id="email-or-mobile" name="contact" placeholder="Enter your email or mobile number">
+                <div class="error-message" id="input-error"></div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Continue">
+            </div>
+            <div id="legalTextRow" class="a-row a-spacing-top-medium a-size-small">
+                By continuing, you agree to VN SHOPY's <a href="{% url 'users:conditions_of_use' %}">Conditions of Use</a> and <a href="{% url 'users:privacy_notice' %}">Privacy Notice</a>.
+            </div>
+            <br>
+            <br>
+            <div class="a-section">
+                <div class="a-row a-expander-container a-expander-inline-container">
+                    <a data-csa-c-func-deps="aui-da-a-expander-toggle" data-csa-c-type="widget" data-csa-interaction-events="click" aria-expanded="false" role="button" href="javascript:void(0)" data-action="a-expander-toggle" class="a-expander-header a-declarative a-expander-inline-header a-link-expander" data-a-expander-toggle="{&quot;allowLinkDefault&quot;:true, &quot;expand_prompt&quot;:&quot;&quot;, &quot;collapse_prompt&quot;:&quot;&quot;}" data-csa-c-id="vvrzfo-tai9bh-g8yamd-ox4cmk">
+                        <i class="a-icon a-icon-expand"></i>
+                        <a href="{% url 'users:need_help' %}">Need help?</a>
+                    </a>
+                </div>
+            </div>
+            <h3>New to VN SHOPY?</h3>
+            <a href="{% url 'users:register' %}" class="outline-button">Create your VN SHOPY account</a>
+        </form>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('login-form');
+            const inputField = document.getElementById('email-or-mobile');
+            const inputError = document.getElementById('input-error');
+            
+            form.addEventListener('submit', function (event) {
+                let isValid = true;
+                inputField.classList.remove('error');
+                inputError.textContent = '';
+
+                // Validate Email or Mobile Number
+                const inputValue = inputField.value.trim();
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const phonePattern = /^\d{10}$/;
+                if (contactInput.value.trim() === '') {
+                    contactInput.classList.add('error');
+                    contactError.textContent = 'Enter your mobile number or email.';
+                    isValid = false;
+                } else if (!contactPattern.test(contactInput.value.trim()) && !phonePattern.test(contactInput.value.trim())) {
+                    contactInput.classList.add('error');
+                    contactError.textContent = 'Please enter a valid mobile number or email address.';
+                    isValid = false;
+                }
+
+                // If form is invalid, prevent submission
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
